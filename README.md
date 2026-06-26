@@ -1,8 +1,8 @@
 # Archive Products
 
-Module PrestaShop pour filtrer les produits des catégories « Archives » **dans le listing produit du Back Office**, sans les supprimer ni les masquer côté boutique. Un toggle 3 états (Masquer / Tout / Archives seules) s'injecte au-dessus de la grille produit.
+Module PrestaShop pour filtrer les produits des catégories « Archives » **dans le listing produit du Back Office**, sans les supprimer. Un toggle 3 états (Masquer / Tout / Archives seules) s'injecte au-dessus de la grille produit. Et si besoin, des actions groupées permettent de désactiver ou réactiver en masse les produits archivés, par catégorie ou globalement, depuis la page de configuration.
 
-> ⚠️ **Périmètre** : ce module agit UNIQUEMENT sur le listing du BO. Vos clients ne voient aucun changement sur la boutique. Ce n'est pas un outil de mise hors-ligne — pour ça, utilisez la désactivation native PrestaShop.
+> ℹ️ **Périmètre** : le toggle au-dessus de la grille n'affecte QUE le listing BO — vos clients ne voient aucun changement côté boutique. Si vous souhaitez aussi masquer ces produits côté front, utilisez les **actions groupées** (« Désactiver »/« Réactiver ») de la page de configuration : elles modifient l'attribut « actif » natif PrestaShop des produits visés, par catégorie ou en masse, de façon parfaitement réversible.
 
 Compatible PrestaShop 1.7, 8 et 9. Module libre et open source sous licence GPL v3, par ZM40.
 
@@ -25,10 +25,12 @@ Un toggle en haut de la grille permet de basculer rapidement entre :
 
 - Configuration multi-catégories : choisissez une ou plusieurs catégories « Archives » via un arbre interactif avec recherche live, expand/collapse, multi-sélection visuelle.
 - Toggle 3 états (Masquer / Tout / Archives seules) injecté au-dessus de la grille produit Symfony (PS 8/9).
-- Filtre intelligent : les produits archivés s'affichent quand même si l'admin filtre explicitement sur une catégorie archive (cas du tri/réactivation).
+- Filtre intelligent : les produits archivés s'affichent quand même si l'admin filtre explicitement sur une catégorie archive (cas du tri / réactivation).
+- **Actions groupées par catégorie** : tableau récapitulatif (Actifs / Inactifs / Total) avec, pour chaque catégorie archive sélectionnée, des boutons « Désactiver tous les produits » et « Réactiver tous les produits ». Quand plusieurs catégories sont sélectionnées, deux boutons globaux « Tout désactiver » / « Tout réactiver » s'affichent en complément. Toutes les actions modifient l'attribut natif `active` du produit (équivalent au toggle natif PrestaShop produit par produit) — entièrement réversible.
+- **Bouton « Retirer cette catégorie de la liste » par ligne** : sort une catégorie de la configuration sans toucher aux produits qu'elle contient (le filtre BO ne s'y applique plus, mais les produits gardent leur statut actif/inactif courant).
 - Compatibilité legacy `AdminProductsController` pour PrestaShop 1.7 — filtre par nom / référence / EAN / ISBN / UPC / MPN.
-- Conservation des produits : aucune suppression, aucune modification, aucun trigger SQL. On filtre uniquement l'affichage.
-- Désinstallation propre : la configuration disparaît, les produits restent strictement intacts.
+- Aucune table SQL ajoutée par le module : la configuration tient dans `Configuration::updateValue` (clé `ARCHIVEPRODUCTS_CATEGORIES`).
+- Désinstallation propre : la configuration disparaît, les produits restent strictement intacts (statut actif/inactif courant préservé).
 
 ## Compatibilité
 
