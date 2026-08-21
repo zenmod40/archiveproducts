@@ -2,13 +2,11 @@
 
 [![Téléchargements](https://img.shields.io/github/downloads/zenmod40/archiveproducts/total.svg)](https://github.com/zenmod40/archiveproducts/releases) [![Version](https://img.shields.io/github/v/release/zenmod40/archiveproducts)](https://github.com/zenmod40/archiveproducts/releases/latest)
 
-> 📦 **[Page du module sur zm40.com](https://zm40.com/archive-produits)** · [Documentation](https://zm40.com/archive-produits/documentation) · [Changelog](https://zm40.com/archive-produits/changelog)
-
 Module PrestaShop pour filtrer les produits des catégories « Archives » **dans le listing produit du Back Office**, sans les supprimer. Un toggle 3 états (Masquer / Tout / Archives seules) s'injecte au-dessus de la grille produit. Et si besoin, des actions groupées permettent de désactiver ou réactiver en masse les produits archivés, par catégorie ou globalement, depuis la page de configuration.
 
 > ℹ️ **Périmètre** : le toggle au-dessus de la grille n'affecte QUE le listing BO — vos clients ne voient aucun changement côté boutique. Si vous souhaitez aussi masquer ces produits côté front, utilisez les **actions groupées** (« Désactiver »/« Réactiver ») de la page de configuration : elles modifient l'attribut « actif » natif PrestaShop des produits visés, par catégorie ou en masse, de façon parfaitement réversible.
 
-Compatible PrestaShop 1.7, 8 et 9. Module libre et open source sous licence GPL v3, par ZM40.
+Compatible PrestaShop 1.7, 8 et 9. Module libre et open source sous licence OSL 3.0, par ZM40.
 
 ## Pourquoi ce module ?
 
@@ -75,4 +73,4 @@ Les pull requests sont les bienvenues. Merci d'ouvrir une issue avant les change
 
 ## Licence
 
-GPL v3 — voir le fichier [LICENSE](LICENSE).
+OSL 3.0 — voir le fichier [LICENSE](LICENSE).
