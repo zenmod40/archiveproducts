@@ -291,7 +291,7 @@ class ArchiveProducts extends Module
     {
         $shop = htmlspecialchars((string) Configuration::get('PS_SHOP_NAME'), ENT_QUOTES, 'UTF-8');
         $name = htmlspecialchars((string) $this->displayName, ENT_QUOTES, 'UTF-8');
-        $sub  = htmlspecialchars($this->l('Filtrer les produits des catégories Archives dans le BO'), ENT_QUOTES, 'UTF-8');
+        $sub  = $this->l('Filtrer les produits des catégories Archives dans le BO');
         $ver  = htmlspecialchars((string) $this->version, ENT_QUOTES, 'UTF-8');
         // Couleur ArchiveProducts : grape (palette ZM40 officielle, cf. catalog)
         $c1 = '#A855E0';
@@ -331,7 +331,7 @@ HTML;
             $this->l('Une nouvelle version d\'Archive Products est disponible : %s.'),
             $latest
         ), ENT_QUOTES, 'UTF-8');
-        $view = htmlspecialchars($this->l('Voir la release →'), ENT_QUOTES, 'UTF-8');
+        $view = $this->l('Voir la release →');
         return $css . '<div class="zm40-update-notice"><span>' . $msg . '</span>'
             . '<a href="' . $url . '" target="_blank" rel="noopener">' . $view . '</a></div>';
     }
@@ -345,7 +345,9 @@ HTML;
         $ver = htmlspecialchars((string) $this->version, ENT_QUOTES, 'UTF-8');
         $url = htmlspecialchars(Zm40CommonAp::siteUrl('archiveproducts', 'about'), ENT_QUOTES, 'UTF-8');
         $github = htmlspecialchars(Zm40CommonAp::githubUrl('archiveproducts'), ENT_QUOTES, 'UTF-8');
-        $copy = htmlspecialchars($this->l('Module libre & open source — OSL 3.0'), ENT_QUOTES, 'UTF-8');
+        // Pas de htmlspecialchars ici : Translate::getModuleTranslation() échappe
+        // déjà la sortie de l(), le second passage transformait « & » en « &amp; ».
+        $copy = $this->l('Module libre & open source — OSL 3.0');
         return '<div class="panel zm40-about">'
             . '<div class="panel-heading"><i class="icon-info-circle"></i> ' . $copy . '</div>'
             . '<p style="margin:6px 0 4px;">'
@@ -463,7 +465,8 @@ HTML;
             .archiveproducts-panel .ap-empty-msg { color: #8b95a1; font-style: italic; text-align: center; padding: 20px; }
             .archiveproducts-panel .ap-counter { background: #25b9d7; color: #fff; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
             .archiveproducts-panel .ap-counter.ap-zero { background: #b0bac4; }
-            .archiveproducts-panel .ap-footer { margin-top: 18px; text-align: right; }
+            .archiveproducts-panel .ap-footer { margin-top: 28px; text-align: right; }
+            .archiveproducts-panel .ap-footer .btn i { margin-right: 6px; }
             .archiveproducts-panel mark { background: #fff59d; padding: 0 2px; border-radius: 2px; }
             /* Bloc "Comment ça fonctionne" — pédagogie pour les nouveaux utilisateurs */
             .ap-howto { background: #f3e8ff; border: 1px solid #d8b9f5; border-left: 4px solid #A855E0; border-radius: 6px; padding: 14px 18px; margin-bottom: 18px; color: #3b1d63; }
