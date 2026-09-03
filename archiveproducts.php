@@ -27,7 +27,7 @@ class ArchiveProducts extends Module
     {
         $this->name = 'archiveproducts';
         $this->tab = 'administration';
-        $this->version = '1.0.2';
+        $this->version = '1.0.3';
         $this->author = 'ZM40';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = ['min' => '1.7.0.0', 'max' => _PS_VERSION_];
@@ -390,15 +390,15 @@ HTML;
     {
         $idLang = (int) $this->context->language->id;
 
-        // Construction de l'arbre de catégories
-        $tree = Category::getNestedCategories(null, $idLang, true);
+        // Construction de l'arbre de catégories (y compris désactivées : l'archivage doit pouvoir cibler des catégories inactives)
+        $tree = Category::getNestedCategories(null, $idLang, false);
 
         // Catégories actuellement sélectionnées
         $stored = Configuration::get('ARCHIVEPRODUCTS_CATEGORIES');
         $selectedIds = $stored ? array_map('intval', array_filter(explode(',', $stored))) : [];
 
         // Map id => nom complet (avec chemin) pour l'affichage de la liste latérale
-        $allCategories = Category::getCategories($idLang, true, false);
+        $allCategories = Category::getCategories($idLang, false, false);
         $catMap = [];
         foreach ($allCategories as $cat) {
             $catMap[(int) $cat['id_category']] = [
@@ -1220,6 +1220,8 @@ HTML;
 
         /** @var \Doctrine\DBAL\Query\QueryBuilder $searchQueryBuilder */
         $searchQueryBuilder = $params['search_query_builder'];
+        /** @var \Doctrine\DBAL\Query\QueryBuilder $countQueryBuilder */
+        $countQueryBuilder = $params['count_query_builder'];
         /** @var \PrestaShop\PrestaShop\Core\Grid\Search\SearchCriteriaInterface $searchCriteria */
         $searchCriteria = $params['search_criteria'];
 
@@ -1243,6 +1245,7 @@ HTML;
             case '2':
                 // Archives seules
                 $searchQueryBuilder->andWhere($existsSubquery);
+                $countQueryBuilder->andWhere($existsSubquery);
                 return;
 
             case '0':
@@ -1257,6 +1260,7 @@ HTML;
                     }
                 }
                 $searchQueryBuilder->andWhere('NOT ' . $existsSubquery);
+                $countQueryBuilder->andWhere('NOT ' . $existsSubquery);
                 return;
         }
     }

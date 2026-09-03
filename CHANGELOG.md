@@ -4,6 +4,13 @@ Toutes les modifications notables de ce module sont documentées ici.
 
 Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/) et le module suit le [Versionnement sémantique](https://semver.org/lang/fr/).
 
+## [1.0.3] - 2026-09-03
+
+### Corrigé
+
+- **Catégories désactivées absentes de l'arbre de sélection.** `Category::getNestedCategories()` et `Category::getCategories()` étaient appelées avec le filtre « actives uniquement », ce qui empêchait de cibler une catégorie Archives désactivée.
+- **Filtre BO « Masquer / Tout afficher / Archives seules » sans effet sur le total et la pagination (PS 8/9, grid Symfony).** La clause d'exclusion/inclusion n'était appliquée qu'à la requête de résultats, jamais à la requête de comptage (`count_query_builder`), donc le nombre de produits affiché et la pagination ne changeaient jamais selon le mode choisi.
+
 ## [1.0.2] - 2026-08-21
 
 ### Modifié
