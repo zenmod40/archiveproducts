@@ -1,6 +1,7 @@
 # Archive Products
 
-[![Téléchargements](https://img.shields.io/github/downloads/zenmod40/archiveproducts/total.svg)](https://github.com/zenmod40/archiveproducts/releases) [![Version](https://img.shields.io/github/v/release/zenmod40/archiveproducts)](https://github.com/zenmod40/archiveproducts/releases/latest)
+![PrestaShop 1.7 → 9](https://img.shields.io/badge/PrestaShop-1.7%20%E2%86%92%209-blue) [![Téléchargements](https://img.shields.io/github/downloads/zenmod40/archiveproducts/total.svg)](https://github.com/zenmod40/archiveproducts/releases) [![Version](https://img.shields.io/github/v/release/zenmod40/archiveproducts)](https://github.com/zenmod40/archiveproducts/releases/latest)
+![License: OSL 3.0](https://img.shields.io/badge/License-OSL--3.0-blue)
 
 > **[Page du module sur zm40.com](https://zm40.com/archive-produits)** · [Documentation](https://zm40.com/archive-produits/documentation) · [Changelog](https://zm40.com/archive-produits/changelog)
 
