@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 global $_MODULE;
 $_MODULE = [];
 $_MODULE['<{archiveproducts}prestashop>archiveproducts_8c6bb0c360801f2ff7b7cc41045c6c18'] = 'Archive Products';
