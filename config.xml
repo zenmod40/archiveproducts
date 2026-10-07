@@ -2,7 +2,7 @@
 <module>
     <name>archiveproducts</name>
     <displayName><![CDATA[Archive Products]]></displayName>
-    <version><![CDATA[1.0.0]]></version>
+    <version><![CDATA[1.0.4]]></version>
     <description><![CDATA[Masque les produits des catégories "Archives" lors du filtrage par nom dans le listing produit BO.]]></description>
     <author><![CDATA[Custom Module]]></author>
     <tab><![CDATA[administration]]></tab>

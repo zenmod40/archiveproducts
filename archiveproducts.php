@@ -27,7 +27,7 @@ class ArchiveProducts extends Module
     {
         $this->name = 'archiveproducts';
         $this->tab = 'administration';
-        $this->version = '1.0.3';
+        $this->version = '1.0.4';
         $this->author = 'ZM40';
         $this->need_instance = 0;
         $this->ps_versions_compliancy = ['min' => '1.7.0.0', 'max' => _PS_VERSION_];
@@ -111,13 +111,107 @@ class ArchiveProducts extends Module
             }
         }
 
+        if (Tools::isSubmit('submitArchiveProductsNet')) {
+            Configuration::updateValue('ZM40_NET_ENABLED', (int) Tools::getValue('ZM40_NET_ENABLED'));
+            Zm40CommonAp::clearFeedCache();
+            $output .= $this->displayConfirmation($this->l('Configuration mise à jour'));
+        }
+
         return $output
             . $this->renderAdminHeader()
             . $this->renderUpdateNotice()
-            . $this->renderConfigPanel()
-            . $this->renderEcosystem()
+            . $this->renderTabs()
             . $this->renderAboutPanel()
             . $this->renderFooter();
+    }
+
+    /**
+     * Onglets de la page : Configuration, puis « Modules ZM40 » (liste des
+     * modules + interrupteur réseau), toujours présent et toujours en dernier.
+     */
+    protected function renderTabs()
+    {
+        $config = $this->l('Configuration');
+        $modules = $this->l('Modules ZM40');
+        return <<<HTML
+<style>
+.zm40-tabs { display: flex; gap: 4px; border-bottom: 2px solid #e5e7eb; margin: 0 0 24px; padding: 0; list-style: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+.zm40-tabs li { padding: 12px 22px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; font-weight: 600; font-size: 14px; color: #6b7280; user-select: none; }
+.zm40-tabs li:hover { color: #A855E0; }
+.zm40-tabs li.is-active { color: #A855E0; border-bottom-color: #A855E0; }
+.zm40-tabs li .icon { margin-right: 8px; font-size: 13px; opacity: 0.7; }
+.zm40-tab-content { display: none; }
+.zm40-tab-content.is-active { display: block; }
+</style>
+<ul class="zm40-tabs" id="zm40-tabs">
+    <li class="is-active" data-tab="config"><i class="icon icon-cogs"></i>{$config}</li>
+    <li data-tab="modules"><i class="icon icon-th-large"></i>{$modules}</li>
+</ul>
+<div class="zm40-tab-content is-active" data-content="config">
+{$this->renderConfigPanel()}
+</div>
+<div class="zm40-tab-content" data-content="modules">
+{$this->renderEcosystem()}
+{$this->renderNetSwitch()}
+</div>
+<script>
+(function () {
+    var tabs = document.querySelectorAll('#zm40-tabs li');
+    var contents = document.querySelectorAll('.zm40-tab-content');
+    function ouvrir(cible) {
+        var li = document.querySelector('#zm40-tabs li[data-tab="' + cible + '"]');
+        var pane = document.querySelector('.zm40-tab-content[data-content="' + cible + '"]');
+        if (!li || !pane) { return; }
+        tabs.forEach(function (x) { x.classList.remove('is-active'); });
+        contents.forEach(function (x) { x.classList.remove('is-active'); });
+        li.classList.add('is-active');
+        pane.classList.add('is-active');
+        try { localStorage.setItem('zm40_archiveproducts_tab', cible); } catch (e) {}
+    }
+    tabs.forEach(function (li) {
+        li.addEventListener('click', function () { ouvrir(li.getAttribute('data-tab')); });
+    });
+    try { ouvrir(localStorage.getItem('zm40_archiveproducts_tab') || 'config'); } catch (e) {}
+})();
+</script>
+HTML;
+    }
+
+    /**
+     * Interrupteur réseau ZM40 (vérification GitHub + liste des modules).
+     */
+    protected function renderNetSwitch()
+    {
+        $oui = [
+            ['id' => 'on', 'value' => 1, 'label' => $this->l('Oui')],
+            ['id' => 'off', 'value' => 0, 'label' => $this->l('Non')],
+        ];
+        $helper = new HelperForm();
+        $helper->module = $this;
+        $helper->name_controller = $this->name;
+        $helper->identifier = $this->identifier;
+        $helper->token = Tools::getAdminTokenLite('AdminModules');
+        $helper->currentIndex = AdminController::$currentIndex . '&configure=' . $this->name;
+        $helper->default_form_language = (int) Configuration::get('PS_LANG_DEFAULT');
+        $helper->allow_employee_form_lang = (int) Configuration::get('PS_BO_ALLOW_EMPLOYEE_FORM_LANG');
+        $helper->languages = $this->context->controller->getLanguages();
+        $helper->show_toolbar = false;
+        $helper->submit_action = 'submitArchiveProductsNet';
+        $helper->tpl_vars = [
+            'fields_value' => ['ZM40_NET_ENABLED' => Zm40CommonAp::isNetEnabled() ? 1 : 0],
+            'languages' => $helper->languages,
+            'id_language' => $this->context->language->id,
+        ];
+
+        return $helper->generateForm([['form' => [
+            'legend' => ['title' => $this->l('Mises à jour et modules ZM40'), 'icon' => 'icon-globe'],
+            'input' => [[
+                'type' => 'switch', 'name' => 'ZM40_NET_ENABLED', 'is_bool' => true, 'values' => $oui,
+                'label' => $this->l('Vérifier les mises à jour et actualiser la liste des modules ZM40'),
+                'desc' => $this->l('Une fois par jour au plus, une requête anonyme vers zm40.com met la liste à jour et GitHub donne la dernière version. Désactivé, la liste reste affichée telle quelle. Aucune donnée de la boutique n\'est transmise.'),
+            ]],
+            'submit' => ['title' => $this->l('Sauvegarder'), 'name' => 'submitArchiveProductsNet'],
+        ]]]);
     }
 
     /**
@@ -376,7 +470,8 @@ HTML;
     {
         $modules = Zm40CommonAp::modulesFeed('archiveproducts');
         if (empty($modules)) {
-            return '';
+            return '<div class="panel"><p class="text-muted" style="margin:0;">'
+                . $this->l('Aucun module à afficher pour le moment.') . '</p></div>';
         }
         $this->context->smarty->assign(array('zm40_modules' => $modules));
         $css = '<link rel="stylesheet" href="' . $this->_path . 'views/css/zm40-common.css">';
