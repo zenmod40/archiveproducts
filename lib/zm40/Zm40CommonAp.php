@@ -100,6 +100,27 @@ class Zm40CommonAp
             . ' v' . htmlspecialchars($version, ENT_QUOTES, 'UTF-8')
             . ' · ' . $a . 'ZM40</a>'
             . ' · ' . $a . 'découvrir nos modules</a>'
+            . self::charte($slug)
+            . '</div>';
+    }
+
+    /**
+     * Badge de la charte TouchWeb pour une cybersécurité responsable (ZM40 adhérent).
+     * Image embarquée dans le module (views/img/zm40/) : aucun appel externe.
+     *
+     * @return string HTML
+     */
+    public static function charte($slug)
+    {
+        $charte = '<a href="https://www.touchweb.fr/cybersecurite-prestashop/charte-cybersecurite-responsable" target="_blank" rel="noopener"';
+        $badge  = (defined('_MODULE_DIR_') ? _MODULE_DIR_ : '/modules/')
+            . basename(dirname(dirname(__DIR__))) . '/views/img/zm40/touchweb-charte.png';
+        $secu   = htmlspecialchars(self::siteUrl($slug, 'footer', '/securite'), ENT_QUOTES, 'UTF-8');
+        return '<div style="display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:10px;">'
+            . $charte . ' style="border:0;"><img src="' . htmlspecialchars($badge, ENT_QUOTES, 'UTF-8')
+            . '" alt="Charte pour une cybersécurité responsable" width="48" height="48" style="display:block;"></a>'
+            . '<span>Éditeur adhérent à la ' . $charte . '>charte pour une cybersécurité responsable</a>'
+            . ' · <a href="' . $secu . '" target="_blank" rel="noopener">notre politique de sécurité</a></span>'
             . '</div>';
     }
 

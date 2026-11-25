@@ -4,6 +4,16 @@ Toutes les modifications notables de ce module sont documentées ici.
 
 Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.0.0/) et le module suit le [Versionnement sémantique](https://semver.org/lang/fr/).
 
+## [1.0.5] - 2026-11-25
+
+### Corrigé
+
+- **Back-office en anglais : la page de configuration s'affiche enfin en anglais.** Le fichier de traduction ne correspondait à aucun texte du module, si bien que tout restait en français.
+
+### Ajouté
+
+- Badge de la charte TouchWeb pour une cybersécurité responsable, en pied de la page de configuration.
+
 ## [1.0.4] - 2026-10-07
 
 ### Modifié
